@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: public.ecr.aws/gsdevops/gs-k8s-job-launcher
+  repository: public.ecr.aws/org/image
   pullPolicy: IfNotPresent
   tag: "latest_job_launcher"
 
