@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "k8s-job-launcher.fullname" . }}
+  labels:
+    {{- include "k8s-job-launcher.labels" . | nindent 4 }}
+  annotations:
+    {{- if .Values.elb.dns.enabled }}
+    external-dns.alpha.kubernetes.io/hostname: {{.Values.elb.dns.hostname}}
+    {{- end }}
+    {{- if .Values.elb.acm.enabled }}
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{.Values.elb.acm.arn}}
+    {{- end }}
+
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "env=ops,role=job_launcher"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "job-https"
+
+    {{- if .Values.elb.internal }}
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    {{- end }}
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: job-https
+  selector:
+    {{- include "k8s-job-launcher.selectorLabels" . | nindent 4 }}

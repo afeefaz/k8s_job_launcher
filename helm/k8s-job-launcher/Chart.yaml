@@ -1,0 +1,7 @@
+apiVersion: v2
+name: k8s-job-launcher
+description: k8s job launcher is a flask app to trigger cronjob remotely via rest call
+type: application
+
+version: 0.1.1
+appVersion: "1.16.0"

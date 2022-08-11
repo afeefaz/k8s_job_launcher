@@ -1,0 +1,14 @@
+.gitignore
+
+dep.yaml
+updateCluster.yaml
+
+Dockerfile
+**/__pycache__/
+**/rendered_charts/
+
+test.py
+push_to_ecr.sh
+
+helm/
+k8s_yaml/
